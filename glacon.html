@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulateur Scientifique de Fonte de Glaçon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .simulation-container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background-color: #fff;
+            border: 2px solid #87CEEB;
+            margin: 20px;
+            overflow: hidden;
+        }
+
+        .ice-cube {
+            position: absolute;
+            background-color: #b0e0e6;
+            border: 2px solid #87CEEB;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .water-puddle {
+            position: absolute;
+            bottom: 0;
+            background-color: #87CEEB;
+            opacity: 0.7;
+            border-radius: 50% 50% 0 0;
+            transition: all 1s ease;
+        }
+
+        .heat-source {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #ff4500;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            margin: 5px;
+        }
+
+        .control-group input[type="number"] {
+            width: 80px;
+            margin-left: 10px;
+        }
+
+        .physical-values {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .percentage {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #333;
+            background: rgba(255,255,255,0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulateur Scientifique de Fonte de Glaçon</h1>
+    
+    <div class="simulation-container">
+        <div class="physical-values">
+            <div>Énergie absorbée: <span id="energy">0</span> J</div>
+            <div>Flux thermique: <span id="heat-flow">0</span> W/m²</div>
+            <div>Masse fondue: <span id="melted-mass">0</span> kg</div>
+        </div>
+        <div class="percentage">0% fondu</div>
+        <div class="ice-cube"></div>
+        <div class="water-puddle"></div>
+        <div class="heat-source"></div>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>Temp. air (°C): 
+                <input type="number" id="air-temp" value="25" step="0.1">
+                <input type="range" min="-10" max="50" value="25">
+            </label>
+        </div>
+        <div class="control-group">
+            <label>Temp. source (°C): 
+                <input type="number" id="heat-temp" value="40" step="0.1">
+                <input type="range" min="20" max="100" value="40">
+            </label>
+        </div>
+        <div class="control-group">
+            <label>Distance (m): 
+                <input type="number" id="distance" value="0.5" step="0.01">
+                <input type="range" min="0.1" max="2" value="0.5" step="0.01">
+            </label>
+        </div>
+        <div class="control-group">
+            <label>Taille (cm): 
+                <input type="number" id="size" value="10" step="0.1">
+                <input type="range" min="5" max="30" value="10">
+            </label>
+        </div>
+        <div class="control-group">
+            <label>Temp. initiale (°C): 
+                <input type="number" id="initial-temp" value="0" step="0.1">
+                <input type="range" min="-20" max="0" value="0">
+            </label>
+        </div>
+        <div class="control-group">
+            <label>Vitesse temps (×): 
+                <input type="number" id="time-mult" value="1" step="0.1">
+                <input type="range" min="0.1" max="10" value="1" step="0.1">
+            </label>
+        </div>
+    </div>
+
+    <script>
+        // Constantes physiques
+        const THERMAL_CONDUCTIVITY = 0.026; // W/(m·K) pour l'air
+        const LATENT_HEAT_FUSION = 334000; // J/kg
+        const ICE_DENSITY = 917; // kg/m³
+        const STEFAN_BOLTZMANN = 5.67e-8; // W/m²·K⁴
+        const EMISSIVITY = 0.97; // Émissivité de la glace
+
+        // Éléments DOM
+        const iceCube = document.querySelector('.ice-cube');
+        const waterPuddle = document.querySelector('.water-puddle');
+        const percentageElement = document.querySelector('.percentage');
+
+        // Paramètres initiaux
+        let params = {
+            airTemp: 298.15,    // K (25°C)
+            heatSourceTemp: 313.15, // K (40°C)
+            distance: 0.5,      // m
+            size: 0.1,          // m (10 cm)
+            iceTemp: 273.15,    // K (0°C)
+            timeMultiplier: 1,
+            meltedMass: 0,
+            totalEnergy: 0
+        };
+
+        function calculateHeatTransfer() {
+            // Conduction avec l'air
+            const deltaTEnv = params.airTemp - params.iceTemp;
+            const Q_cond = THERMAL_CONDUCTIVITY * Math.pow(params.size, 2) * deltaTEnv / params.distance;
+
+            // Rayonnement thermique
+            const Q_rad = EMISSIVITY * STEFAN_BOLTZMANN * 
+                        (Math.pow(params.heatSourceTemp, 4) - Math.pow(params.iceTemp, 4));
+
+            return (Q_cond + Q_rad) * params.timeMultiplier;
+        }
+
+        function updatePhysics(deltaTime) {
+            const surfaceArea = 6 * Math.pow(params.size, 2);
+            const volume = Math.pow(params.size, 3);
+            const mass = volume * ICE_DENSITY;
+
+            const heatFlow = calculateHeatTransfer() * deltaTime;
+            params.totalEnergy += heatFlow;
+
+            const melted = Math.min(mass, heatFlow / LATENT_HEAT_FUSION);
+            params.meltedMass += melted;
+
+            const remainingMass = mass - params.meltedMass;
+            params.size = Math.cbrt(remainingMass / ICE_DENSITY);
+
+            // Mise à jour des affichages
+            document.getElementById('energy').textContent = params.totalEnergy.toFixed(1);
+            document.getElementById('heat-flow').textContent = calculateHeatTransfer().toFixed(2);
+            document.getElementById('melted-mass').textContent = params.meltedMass.toFixed(4);
+
+            const meltPercentage = (params.meltedMass / mass * 100).toFixed(1);
+            percentageElement.textContent = `${meltPercentage}% fondu`;
+
+            return {
+                size: params.size,
+                meltedPercentage: meltPercentage
+            };
+        }
+
+        // Boucle de simulation
+        let lastTime = Date.now();
+        function gameLoop() {
+            const now = Date.now();
+            const deltaTime = (now - lastTime) / 1000;
+            lastTime = now;
+
+            const results = updatePhysics(deltaTime);
+
+            // Mise à jour visuelle
+            const pixelSize = results.size * 500; // 1m = 500px
+            iceCube.style.width = `${pixelSize}px`;
+            iceCube.style.height = `${pixelSize}px`;
+            iceCube.style.left = `calc(50% - ${pixelSize/2}px)`;
+            iceCube.style.top = `calc(50% - ${pixelSize/2}px)`;
+
+            waterPuddle.style.width = `${results.meltedPercentage * 3}px`;
+            waterPuddle.style.height = `${results.meltedPercentage * 0.3}px`;
+            waterPuddle.style.left = `calc(50% - ${results.meltedPercentage * 1.5}px)`;
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Synchronisation des inputs
+        document.querySelectorAll('.control-group input').forEach(input => {
+            input.addEventListener('input', function(e) {
+                const value = parseFloat(e.target.value);
+                const group = e.target.closest('.control-group');
+                const isRange = e.target.type === 'range';
+                
+                if(isRange) {
+                    group.querySelector('input[type="number"]').value = value.toFixed(1);
+                } else {
+                    group.querySelector('input[type="range"]').value = value;
+                }
+
+                // Conversion des unités
+                switch(e.target.id) {
+                    case 'air-temp':
+                    case 'heat-temp':
+                    case 'initial-temp':
+                        params[e.target.id.replace('-', '')] = value + 273.15;
+                        break;
+                    case 'size':
+                        params.size = value / 100; // Conversion cm en m
+                        break;
+                    case 'distance':
+                        params.distance = value;
+                        break;
+                    case 'time-mult':
+                        params.timeMultiplier = value;
+                        break;
+                }
+            });
+        });
+
+        // Initialisation
+        gameLoop();
+    </script>
+</body>
+</html>

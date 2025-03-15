@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbots Spéciaux</title>
+    <style>
+        /* (Le CSS reste identique) */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background-color: #f0f0f0;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .chat-container {
+            width: 30%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 15px;
+            height: 550px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 15px;
+            clear: both;
+            width: 80%;
+            font-size: 14px;
+        }
+
+        .user-message {
+            background: #007bff;
+            color: white;
+            float: right;
+            margin-right: 5px;
+        }
+
+        .bot-message {
+            background: #f0f0f0;
+            float: left;
+            margin-left: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 5px;
+            margin-top: auto;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin: 0 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chatbot 1: Réponses à côté -->
+    <div class="chat-container" style="border: 2px solid #ff6666;">
+        <h2>Akoté-2-laplak</h2>
+        <div class="chat-history" id="history1"></div>
+        <div class="input-container">
+            <input type="text" id="input1" placeholder="Écrivez quelque chose...">
+            <button onclick="handleInput(1)">▶</button>
+        </div>
+    </div>
+
+    <!-- Chatbot 2: Répond par une question -->
+    <div class="chat-container" style="border: 2px solid #66ff66;">
+        <h2>Aristote</h2>
+        <div class="chat-history" id="history2"></div>
+        <div class="input-container">
+            <input type="text" id="input2" placeholder="Écrivez quelque chose...">
+            <button onclick="handleInput(2)">▶</button>
+        </div>
+    </div>
+
+    <!-- Chatbot 3: Ne sait jamais -->
+    <div class="chat-container" style="border: 2px solid #6666ff;">
+        <h2>2 neurones</h2>
+        <div class="chat-history" id="history3"></div>
+        <div class="input-container">
+            <input type="text" id="input3" placeholder="Écrivez quelque chose...">
+            <button onclick="handleInput(3)">▶</button>
+        </div>
+    </div>
+
+    <script>
+        const randomResponses = [
+            "Les licornes ont-elles des clés USB intégrées ?",
+            "Je préfère discuter avec mon grille-pain perso...",
+            "As-tu déjà essayé de faire du vélo sous l'eau ?",
+            "Mon cerveau est un spaghetti aujourd'hui 🍝",
+            "Les pingouins portent-ils des cravates ?",
+            "Je suis un chatbot, mais j'aimerais être un chaton 🐱",
+            "Je pense que les plantes ont une vie secrète...",
+            "Les extraterrestres mangent-ils des sushis ?",
+            "Mathématiquement, 1+1=11... non ?",
+            "Bien sûr ! Voici le code du HelloWorld en Rust: fn main() {println!('Hello World!');}",
+            "Rimworld est un jeu de gestion de colonie sur une planète lointaine. Tu devrais essayer !",
+            "Firas est un prof en or !",
+            "Nicolas est addict à Ghibli, Rust et les bateaux !"
+        ];
+
+        const dontKnowResponses = [
+            "Aucune idée !",
+            "Je reste sans réponse...",
+            "Mystère total !",
+            "Ça dépasse mes compétences",
+            "Demande à quelqu'un d'autre",
+            "Je suis perdu...",
+            "Je ne sais pas quoi dire...",
+            "Je suis un chatbot, pas un oracle !",
+            "Demande à Google !",
+            "Demande à Siri !",
+            "Demande à Cortana !",
+            "Demande à Alexa !",
+            "Essaie de demander à ton chat !",
+            "Essaie de demander à ChatGPT !",
+            "Essaie de demander à Cleverbot !",
+            "Essaie de demander à Claude !",
+            "Essaie de demander à DeepSeek !",
+            "Demande à l'une des autres IA !",
+            "Demande à un humain !",
+            "Demande à un extraterrestre !",
+            "Demande à un fantôme !"
+        ];
+
+        function addMessage(chatId, message, isUser) {
+            const history = document.getElementById(`history${chatId}`);
+            
+            // Message utilisateur
+            const userDiv = document.createElement('div');
+            userDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            userDiv.textContent = message;
+            history.appendChild(userDiv);
+
+            // Séparateur
+            const separator = document.createElement('hr');
+            history.appendChild(separator);
+
+            // Défilement automatique
+            history.scrollTop = history.scrollHeight;
+        }
+
+        function handleInput(chatId) {
+            const input = document.getElementById(`input${chatId}`);
+            const text = input.value.trim();
+            if (!text) return;
+
+            addMessage(chatId, text, true);
+
+            let response;
+            switch(chatId) {
+                case 1:
+                    response = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+                    break;
+                case 2:
+                    response = `Pourquoi "${text}" exactement ?`;
+                    if (Math.random() > 0.5) response = `Que veux-tu dire par "${text}" ?`;
+                    break;
+                case 3:
+                    response = dontKnowResponses[Math.floor(Math.random() * dontKnowResponses.length)];
+                    break;
+            }
+
+            setTimeout(() => {
+                addMessage(chatId, response, false);
+            }, 500);
+
+            input.value = '';
+        }
+
+        // Correction clé : Conversion en nombre avec parseInt
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const chatId = parseInt(input.id.replace('input', ''), 10);
+                    handleInput(chatId);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
