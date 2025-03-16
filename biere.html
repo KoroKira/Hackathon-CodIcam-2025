@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulateur de Bière - Vue de Coupe</title>
+  <!-- Inclusion d'une police Google pour un rendu moderne -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap">
+  <style>
+    /* Style général */
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #e0f7fa, #80deea);
+      font-family: 'Roboto', sans-serif;
+      color: #333;
+    }
+
+    /* Conteneur principal de l'interface utilisateur */
+    #ui {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.97);
+      padding: 25px 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      max-width: 320px;
+    }
+    
+    #ui h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 500;
+      color: #007acc;
+    }
+    
+    form#controls {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      font-size: 16px;
+    }
+    
+    .input-group label {
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    .input-group select,
+    .input-group input {
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: border 0.3s;
+    }
+    
+    .input-group select:focus,
+    .input-group input:focus {
+      border-color: #007acc;
+      outline: none;
+    }
+    
+    #startButton {
+      padding: 10px 20px;
+      background: #007acc;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: background 0.3s, transform 0.2s;
+    }
+    
+    #startButton:hover {
+      background: #005fa3;
+      transform: scale(1.02);
+    }
+    
+    /* Zone d'affichage des statistiques dans l'UI */
+    #stats {
+      margin-top: 20px;
+      font-size: 15px;
+      line-height: 1.5;
+      background: #eef7ff;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+    }
+    
+    #stats p {
+      margin: 5px 0;
+    }
+    
+    /* Container pour la simulation ou le canvas 2D */
+    #simulation-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    /* Canvas de simulation */
+    #beerCanvas {
+      background: #fff;
+      border: 2px solid #333;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      border-radius: 8px;
+    }
+    
+    @media (max-width: 480px) {
+      #ui {
+        width: 90%;
+        left: 5%;
+        top: 5%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="ui">
+    <h1>Simulateur de Bière</h1>
+    <button onclick="window.location.href='index.html'" id="backButton">Retour à l'accueil</button>
+    <form id="controls">
+      <!-- Choix du volume -->
+      <div class="input-group">
+        <label for="volumeSelect">Volume de la bière :</label>
+        <select id="volumeSelect" name="volume">
+          <option value="demie">Demie (0.25 L)</option>
+          <option value="pinte" selected>Pinte (0.5 L)</option>
+          <option value="pichet">Pichet (1 L)</option>
+          <option value="fut">Fût (20 L)</option>
+        </select>
+      </div>
+      <!-- Choix du type de bière -->
+      <div class="input-group">
+        <label for="typeSelect">Type de bière :</label>
+        <select id="typeSelect" name="type">
+          <option value="blonde" selected>Blonde</option>
+          <option value="brune">Brune</option>
+          <option value="triple">Triple</option>
+          <option value="rousse">Rousse</option>
+          <option value="blanche">Blanche</option>
+        </select>
+      </div>
+      <!-- Choix de l'intensité de mousse -->
+      <div class="input-group">
+        <label for="foamSelect">Intensité de mousse :</label>
+        <select id="foamSelect" name="foam">
+          <option value="peu">Peu moussée</option>
+          <option value="moyen" selected>Moyennement moussée</option>
+          <option value="tres">Très moussue</option>
+        </select>
+      </div>
+      <!-- Bouton de démarrage -->
+      <button type="button" id="startButton">Démarrer la simulation</button>
+    </form>
+    <div id="stats">
+      <p id="timeDisplay">Temps écoulé : 0.0 s</p>
+      <p id="phaseDisplay">Phase : –</p>
+      <p id="massDisplay">Masse :</p>
+      <p id="temperatureDisplay">Température :</p>
+    </div>
+  </div>
+  
+  <div id="simulation-container">
+    <canvas id="beerCanvas" width="300" height="500"></canvas>
+  </div>
+  
+  <!-- Chargement de la logique JavaScript -->
+  <script src="biere.js"></script>
+</body>
+</html>

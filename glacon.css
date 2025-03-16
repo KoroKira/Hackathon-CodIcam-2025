@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #eef;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+#icecube {
+    width: 100px;
+    height: 100px;
+    background-color: lightblue;
+    border-radius: 10px;
+    margin: 20px auto;
+    transition: width 1s linear, height 1s linear, opacity 1s linear;
+}

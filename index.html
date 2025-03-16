@@ -3,34 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page d'index</title>
+    <title>BIENVENUE DANS L'ENFER VISUEL</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Papyrus', 'Comic Sans MS', 'Wingdings', cursive;
+            background: 
+                linear-gradient(90deg, #ff00ff 25%, #00ff00 25%, #00ff00 50%, #ff0000 50%, #ff0000 75%, #0000ff 75%),
+                url('https://i.gifer.com/7VE.gif');
+            background-blend-mode: difference;
+            animation: backgroundStrobe 1s infinite, spin 60s linear infinite;
+            color: #ffff00;
             text-align: center;
-            margin-top: 50px;
+            margin: 0;
+            padding: 50px;
+            transform: skew(-10deg);
         }
+
+        @keyframes backgroundStrobe {
+            0% { filter: invert(0%); }
+            50% { filter: invert(100%); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        h1 {
+            font-size: 80px;
+            transform: rotate(-25deg) scale(1.5);
+            margin: 30px;
+            color: #00ffff !important;
+            text-shadow: 
+                10px 10px 0 #ff00ff,
+                -5px -5px 0 #00ff00,
+                0 0 50px #ffffff;
+            animation: titleGlitch 2s infinite;
+            background: url('https://media.tenor.com/3FqQ0vQJ8zIAAAAi/flame-fire.gif');
+            -webkit-background-clip: text;
+            padding: 20px;
+            border: 15px dotted red;
+        }
+
+        @keyframes titleGlitch {
+            0% { transform: rotate(-25deg) translate(0); }
+            20% { transform: rotate(-30deg) translate(-10px, 5px); }
+            40% { transform: rotate(-20deg) translate(10px, -5px); }
+            60% { transform: rotate(-25deg) scale(1.8); }
+            80% { transform: rotate(-25deg) skew(50deg); }
+        }
+
+        p {
+            font-size: 40px;
+            background: repeating-linear-gradient(
+                45deg,
+                yellow,
+                yellow 10px,
+                black 10px,
+                black 20px
+            );
+            padding: 30px;
+            border: 10px groove #ff00ff;
+            animation: 
+                colorChange 3s steps(5) infinite,
+                expand 2s ease-in-out infinite;
+            margin: 50px;
+            box-shadow: 0 0 50px 20px #ffffff;
+        }
+
+        @keyframes expand {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+
         .button {
+            font-family: 'Curlz MT', 'Arial Black', fantasy;
+            font-size: 35px;
+            color: black !important;
+            background: 
+                radial-gradient(circle, #ff0000 0%, #00ff00 50%, #0000ff 100%),
+                url('https://bestanimations.com/media/rainbow-sheen/1522708375rainbow-sheen-gif.gif');
+            padding: 25px 40px;
+            margin: 15px;
+            border: 8px zigzag #ffff00;
             display: inline-block;
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
+            transform: rotate(360deg);
+            animation: 
+                buttonMadness 0.4s infinite,
+                hueRotate 2s infinite;
+            text-decoration: blink;
+            position: relative;
+            z-index: 9999;
         }
+
         .button:hover {
-            background-color: #0056b3;
+            background: #000000;
+            color: #ffffff !important;
+            text-shadow: 0 0 20px #ff00ff;
+            transform: scale(5) rotate(1080deg);
+            filter: hue-rotate(360deg);
+        }
+
+        @keyframes buttonMadness {
+            0% { border-radius: 0; }
+            50% { border-radius: 50%; }
+            100% { border-radius: 0 50% 50% 0; }
+        }
+
+        @keyframes hueRotate {
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        marquee {
+            font-size: 30px;
+            color: #ffffff;
+            background: #000000;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            border-bottom: 5px dotted #ff0000;
+        }
+
+        /* Curseurs personnalisés */
+        body { cursor: url('https://s2.svgbox.net/emoji.svg?ic=clown&color=ff0000'), auto; }
+        .button { cursor: url('https://s2.svgbox.net/emoji.svg?ic=collision&color=00ff00'), pointer; }
+        h1 { cursor: url('https://s2.svgbox.net/emoji.svg?ic=alien&color=0000ff'), move; }
+
+        /* Élément qui suit la souris */
+        .cursor-follower {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            background: url('https://i.gifer.com/embedded/download/ZO2C.gif');
+            pointer-events: none;
+            z-index: 99999;
         }
     </style>
 </head>
 <body>
-    <h1>Bienvenue sur notre site</h1>
-    <p>Veuillez choisir une page :</p>
-    <a href="passworder.html" class="button">MDP</a>
-    <a href="page2.html" class="button">Page 2</a>
-    <a href="page3.html" class="button">Page 3</a>
+    <div class="cursor-follower"></div>
+    <marquee behavior="alternate" scrollamount="20">⚠️ ALERTE VISUELLE ⚠️ NE REGARDEZ PAS TROP LONGTEMPS ⚠️ RISQUE DE CRISE D'ÉPILEPSIE ⚠️</marquee>
+    
+    <h1>!! BIENVENUE DANS LE CHAOS TOTAL !!</h1>
+    <p style="transform: rotate(180deg) scaleX(-1);">!! BIENVENUE DANS LE CHAOS TOTAL !!</p>
+    
+    <div style="position: relative; height: 500px;">
+        <a href="passworder.html" class="button" style="position: absolute; left: 0; top: 0;">MDP OUBLIÉ??</a>
+        <a href="dominos.html" class="button" style="position: absolute; right: 0; top: 200px; transform: rotate(90deg);">DOMINOS PIZZA</a>
+        <a href="biere.html" class="button" style="position: absolute; left: 50%; top: 300px; transform: rotate(-45deg);">🍺 BIÈRE 🍺</a>
+        <a href="glacon.html" class="button" style="position: absolute; left: 20%; top: 100px; transform: scale(2);">❄️ GLACON ❄️</a>
+        <a href="chatbot.html" class="button" style="position: absolute; right: 30%; top: 400px; transform: rotate(180deg);">🤖 CHATBOT 🤖</a>
+        <a href="loading.html" class="button" style="position: absolute; left: 10%; bottom: 0; animation: hueRotate 0.5s infinite;">🌀 LOADING...🌀</a>
+        <a href="traducteur.html" class="button" style="position: absolute; right: 10%; bottom: 50px; transform: skew(30deg);">🗣️ TRADUCTEUR 🌍</a>
+    </div>
+
+    <script>
+        // Fait suivre un élément avec la souris
+        document.addEventListener('mousemove', function(e) {
+            const follower = document.querySelector('.cursor-follower');
+            follower.style.left = e.pageX - 25 + 'px';
+            follower.style.top = e.pageY - 25 + 'px';
+        });
+
+        // Changement aléatoire de couleurs
+        setInterval(() => {
+            document.body.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        }, 50000);
+
+        // Alerte pop-up ennuyeuse
+        setInterval(() => {
+            alert('VOUS ÊTES ENCORE LÀ ?! 😈');
+        }, 30000);
+        
+        function showPersistentPopup() {
+            const popup = confirm("bravo t'as fermé la pop-up !");
+            if (!popup) {
+                setTimeout(showPersistentPopup, 100);
+            } else {
+                setTimeout(showPersistentPopup, 100);
+            }
+        }
+
+        // Afficher la pop-up initialement
+        setTimeout(() => {
+            alert("Bienvenue dans le chaos ! Préparez-vous à l'inévitable.");
+            showPersistentPopup();
+        }, 5000); // 5 secondes avant de commencer pour mettre un peu de suspense
+    </script>
+
 </body>
 </html>

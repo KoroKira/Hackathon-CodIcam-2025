@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barre de Chargement Ultra-ÉPIQUE 3.0</title>
+    <style>
+        body {
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #ff0000, #0000ff, #00ff00, #ff00ff);
+            overflow: hidden;
+            color: #fff;
+            animation: backgroundChaos 5s infinite, spin 10s infinite linear, shakeBody 0.2s infinite;
+        }
+
+        @keyframes backgroundChaos {
+            0% { background-position: 0 0; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0 0; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes shakeBody {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 5px); }
+            50% { transform: translate(5px, -5px); }
+            75% { transform: translate(-5px, -5px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 1;
+            animation: shake 0.5s infinite, float 3s infinite ease-in-out;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        .loading-bar {
+            width: 90%;
+            height: 40px;
+            border: 4px dashed #ffeb3b;
+            border-radius: 25px;
+            overflow: hidden;
+            margin: 30px auto;
+            position: relative;
+            box-shadow: 0 0 30px #ffeb3b, inset 0 0 15px #ffeb3b;
+            transform: skewX(-20deg);
+            animation: barGlow 2s infinite alternate, barSpin 5s infinite linear;
+        }
+
+        @keyframes barGlow {
+            0% { box-shadow: 0 0 30px #ffeb3b, inset 0 0 15px #ffeb3b; }
+            100% { box-shadow: 0 0 60px #ff00ff, inset 0 0 30px #00ff00; }
+        }
+
+        @keyframes barSpin {
+            0% { transform: skewX(-20deg) rotate(0deg); }
+            100% { transform: skewX(-20deg) rotate(360deg); }
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff5722, #8e44ad, #3498db, #27ae60);
+            animation: loadingReverse 6s infinite, colorShift 3s infinite, progressPulse 1s infinite;
+        }
+
+        @keyframes loadingReverse {
+            0% { width: 0%; }
+            25% { width: 100%; }
+            50% { width: 0%; }
+            75% { width: 100%; }
+            100% { width: 0%; }
+        }
+
+        @keyframes colorShift {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        @keyframes progressPulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .absurd-text {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px #000;
+            animation: fadeAndZoom 2s infinite alternate, textChaos 3s infinite, textColorShift 5s infinite;
+        }
+
+        @keyframes fadeAndZoom {
+            0% { opacity: 0.6; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes textChaos {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        @keyframes textColorShift {
+            0% { color: #fff; }
+            25% { color: #ff0; }
+            50% { color: #f0f; }
+            75% { color: #0ff; }
+            100% { color: #fff; }
+        }
+
+        .scroll-text {
+            margin-top: 30px;
+            font-size: 1.2em;
+            color: yellow;
+            animation: scrollChaos 10s infinite linear, colorFlash 1s infinite, textWobble 2s infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes scrollChaos {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        @keyframes colorFlash {
+            0% { color: yellow; }
+            50% { color: magenta; }
+            100% { color: cyan; }
+        }
+
+        @keyframes textWobble {
+            0% { transform: skewX(0deg); }
+            25% { transform: skewX(10deg); }
+            50% { transform: skewX(-10deg); }
+            75% { transform: skewX(10deg); }
+            100% { transform: skewX(0deg); }
+        }
+
+        audio {
+            display: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff0;
+            animation: confettiFall 5s infinite;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        .emoji-rain {
+            position: absolute;
+            top: -100px;
+            font-size: 2em;
+            animation: emojiFall 5s infinite linear;
+        }
+
+        @keyframes emojiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" style="position: absolute; top: 20px; left: 20px; padding: 10px 20px; background: #ffeb3b; color: #000; text-decoration: none; border-radius: 5px; font-weight: bold; box-shadow: 0 0 10px #ffeb3b;">Retour</a>
+    <div class="container">
+        <h1>⚡ LA BARRE DE CHARGEMENT ⚡</h1>
+        <div class="loading-bar">
+            <div class="progress"></div>
+        </div>
+        <div class="absurd-text" id="absurdText">…chargement de l'univers terminé à 0%… ou peut-être 100% ? Qui sait ?</div>
+        <div class="scroll-text">
+            Connexion à une galaxie inexistante... Téléchargement des pixels quantiques... Décompression des atomes...
+        </div>
+    </div>
+    <audio autoplay loop>
+        <source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
+    </audio>
+    <div class="confetti" style="left: 10%;"></div>
+    <div class="confetti" style="left: 20%;"></div>
+    <div class="confetti" style="left: 30%;"></div>
+    <div class="confetti" style="left: 40%;"></div>
+    <div class="confetti" style="left: 50%;"></div>
+    <div class="confetti" style="left: 60%;"></div>
+    <div class="confetti" style="left: 70%;"></div>
+    <div class="confetti" style="left: 80%;"></div>
+    <div class="confetti" style="left: 90%;"></div>
+    <div class="emoji-rain" style="left: 5%;">🎉</div>
+    <div class="emoji-rain" style="left: 15%;">🚀</div>
+    <div class="emoji-rain" style="left: 25%;">🌈</div>
+    <div class="emoji-rain" style="left: 35%;">🍕</div>
+    <div class="emoji-rain" style="left: 45%;">👾</div>
+    <div class="emoji-rain" style="left: 55%;">🎸</div>
+    <div class="emoji-rain" style="left: 65%;">🦄</div>
+    <div class="emoji-rain" style="left: 75%;">🍩</div>
+    <div class="emoji-rain" style="left: 85%;">🤖</div>
+    <div class="emoji-rain" style="left: 95%;">👽</div>
+
+    <script>
+        const absurdText = document.getElementById('absurdText');
+        const messages = [
+            "…chargement de l'univers terminé à 0%… ou peut-être 100% ? Qui sait ?",
+            "…assemblage des quarks en cours...",
+            "…téléportation des données intergalactiques...",
+            "…compression des dimensions parallèles...",
+            "…calcul de la réponse à la vie, l'univers et le reste...",
+            "…chargement de la barre de chargement... méta !",
+            "…erreur 404 : humour introuvable...",
+            "…initialisation du paradoxe temporel...",
+            "…synchronisation des licornes quantiques...",
+            "…déploiement des confettis interstellaires..."
+        ];
+
+        let index = 0;
+        setInterval(() => {
+            absurdText.textContent = messages[index];
+            index = (index + 1) % messages.length;
+        }, 3000);
+    </script>
+</body>
+</html>

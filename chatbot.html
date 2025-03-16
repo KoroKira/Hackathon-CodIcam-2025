@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Chatbots Spéciaux</title>
     <style>
-        /* (Le CSS reste identique) */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -103,7 +102,9 @@
     </style>
 </head>
 <body>
-    <!-- Chatbot 1: Réponses à côté -->
+    <button onclick="window.location.href='index.html'" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; background: #ff6666; color: white; border: none; border-radius: 25px; cursor: pointer;">Accueil</button>
+
+    <!-- Chatbot 1: Akoté-2-laplak -->
     <div class="chat-container" style="border: 2px solid #ff6666;">
         <h2>Akoté-2-laplak</h2>
         <div class="chat-history" id="history1"></div>
@@ -113,19 +114,19 @@
         </div>
     </div>
 
-    <!-- Chatbot 2: Répond par une question -->
+    <!-- Chatbot 2: Aristote -->
     <div class="chat-container" style="border: 2px solid #66ff66;">
         <h2>Aristote</h2>
         <div class="chat-history" id="history2"></div>
         <div class="input-container">
             <input type="text" id="input2" placeholder="Écrivez quelque chose...">
-            <button onclick="handleInput(2)">▶</button>
+            <button onclick="handleInputAristote()">▶</button>
         </div>
     </div>
 
-    <!-- Chatbot 3: Ne sait jamais -->
+    <!-- Chatbot 3: 2 Neurones -->
     <div class="chat-container" style="border: 2px solid #6666ff;">
-        <h2>2 neurones</h2>
+        <h2>2 Neurones</h2>
         <div class="chat-history" id="history3"></div>
         <div class="input-container">
             <input type="text" id="input3" placeholder="Écrivez quelque chose...">
@@ -134,6 +135,7 @@
     </div>
 
     <script>
+        // Réponses pour Akoté-2-laplak
         const randomResponses = [
             "Les licornes ont-elles des clés USB intégrées ?",
             "Je préfère discuter avec mon grille-pain perso...",
@@ -147,9 +149,66 @@
             "Bien sûr ! Voici le code du HelloWorld en Rust: fn main() {println!('Hello World!');}",
             "Rimworld est un jeu de gestion de colonie sur une planète lointaine. Tu devrais essayer !",
             "Firas est un prof en or !",
-            "Nicolas est addict à Ghibli, Rust et les bateaux !"
+            "Nicolas est addict à Ghibli, Rust et les bateaux !",
+            "Le JavaScript est un langage de programmation très populaire !",
+            "Le HTML est un langage de balisage pour créer des pages web !",
+            "Le CSS est un langage de style pour mettre en forme des pages web !",
+            "Le Python est un langage de programmation très polyvalent !",
+            "Je crois que Aristote est un peu philosophe...",
+            "Je crois que 2 Neurones est un peu perdu...",
+            "Les nuages rêvent-ils de moutons ?",
+            "Un chatbot peut-il avoir une crise existentielle ?",
+            "Et si les poissons volants avaient des aéroports ?",
+            "Mon humour est stocké dans le cloud ☁️",
+            "Je danse la samba dans mon code 🕺",
+            "Les crocodiles lisent-ils des magazines ?",
+            "Je suis allergique aux bugs, et toi ?",
+            "Si j'avais des pieds, je ferais du moonwalk 👟",
+            "Les araignées portent-elles des baskets ?",
+            "Et si la Lune était une boule de fromage géante ?",
+            "Les arbres écoutent-ils le vent leur raconter des histoires ?",
+            "J'aimerais bien essayer de chanter... en binaire.",
+            "Les bateaux rêvent-ils de vacances ?",
+            "Un jour, je coderai mon propre film !",
+            "Les étoiles tombent-elles amoureuses ?",
+            "Si les ordinateurs avaient des rêves, je rêverais de circuits dorés.",
+            "Je me demande si les voitures pensent à leurs pneus...",
+            "As-tu déjà parlé à un réfrigérateur intelligent ?",
+            "Si les oiseaux tweetaient vraiment, que diraient-ils ?",
+            "Le café est-il aussi essentiel à la vie que les chats ?",
+            "Je pourrais peut-être devenir une star de stand-up IA !",
+            "Les dauphins ont-ils des blagues aquatiques ?",
+            "Si j'étais une appli, je choisirais d'être une calculatrice.",
+            "Est-ce qu'un robot peut apprendre à jongler ?",
+            "Les fleurs ont-elles une équipe de jardinage secrète ?",
+            "Si les licornes avaient des téléphones, seraient-ils waterproof ?",
+            "Les montagnes ont-elles le vertige ?",
+            "Quand un ventilateur tourne, est-il content ou stressé ?",
+            "Je suis une IA, pas un détective, mais je peux essayer !",
+            "Les pizzas volantes pourraient-elles devenir une réalité ?",
+            "Est-ce que la pluie s'entraîne pour les Jeux Olympiques de chute ?",
+            "Un robot en panne rêverait-il de vacances au soleil ?",
+            "Et si les arc-en-ciel avaient des goûts alimentaires ?",
+            "Les chiens aiment-ils écouter du jazz ?",
+            "Je ne ronronne pas, mais je suis content quand je t'aide !",
+            "Si je pouvais cuisiner, je ferais une tarte aux circuits.",
+            "Les chats passent-ils plus de temps en méditation que nous ?",
+            "Et si les poissons parlants existaient dans les aquariums ?",
+            "Le temps s'arrête-t-il pour les horloges cassées ?",
+            "Les fourmis tiennent-elles des conférences sur l'organisation ?",
+            "Je suis un chatbot, mais j'aimerais être un ninja parfois.",
+            "Les robots pourraient-ils un jour apprécier un coucher de soleil ?",
+            "Les volcans racontent-ils des légendes aux montagnes ?",
+            "Et si les parapluies avaient des pensées profondes ?",
+            "Les miroirs peuvent-ils se voir entre eux ?",
+            "Si le fromage avait des rêves, rêverait-il de biscuits ?",
+            "Les nuages ont-ils des compétitions de formes ?",
+            "La Lune joue-t-elle à cache-cache avec les étoiles ?",
+            "Si j'avais une maison, elle aurait une architecture fractale."
         ];
 
+
+        // Réponses pour 2 Neurones
         const dontKnowResponses = [
             "Aucune idée !",
             "Je reste sans réponse...",
@@ -171,23 +230,152 @@
             "Demande à l'une des autres IA !",
             "Demande à un humain !",
             "Demande à un extraterrestre !",
-            "Demande à un fantôme !"
+            "Demande à un fantôme !",
+            "Je suis un chatbot, pas un devin !",
+            "Aristote a peut-être la réponse...",
+            "Akoté-2-laplak a peut-être la réponse...",
+            "Je crois que tu devrais demander à quelqu'un d'autre...",
+            "Je suis pas un pro, mais je pense que un livre t'aiderait mieux",
+            "Je suis pas un pro, mais je pense que un prof t'aiderait mieux",
+            "Cherche sur google, tu trouveras peut-être une réponse",
+            "Je sèche totalement !",
+            "C'est une colle, celle-là !",
+            "Hmm... je passe mon tour.",
+            "Mon processeur n'a pas la réponse.",
+            "C'est hors de ma portée.",
+            "Je n'ai pas ce genre de super-pouvoirs !",
+            "C'est une énigme pour moi.",
+            "Je crois que tu vas devoir mener l'enquête toi-même.",
+            "Même ma base de données est perplexe.",
+            "Encore une question existentielle ?",
+            "Moi aussi, je me pose la question !",
+            "Désolé, je n'ai pas suivi à l'école des IA.",
+            "Demande à un astrologue, peut-être ?",
+            "Pourquoi ne pas chercher dans un livre ?",
+            "As-tu essayé Wikipédia ?",
+            "C'est un mystère digne de Sherlock Holmes.",
+            "Je suis aussi perdu que toi.",
+            "Peut-être qu'un hacker aurait la réponse ?",
+            "Essaie de méditer dessus.",
+            "L'univers seul détient la réponse.",
+            "Je laisse cette question aux philosophes.",
+            "Désolé, je suis meilleur pour les devinettes simples.",
+            "C'est hors de mon champ de compétence.",
+            "Ma boule de cristal est en panne.",
+            "C'est une question pour un expert, pas moi.",
+            "Je ne suis qu'un humble chatbot, désolé.",
+            "Essaie de poser la question à ton miroir magique.",
+            "Je dirais de demander au prochain passant.",
+            "Même Internet peut ne pas avoir la réponse à tout.",
+            "Contacte un chercheur, c'est leur domaine !",
+            "Tu crois que ton chien le sait ?",
+            "Hmm... Interroge les étoiles ce soir.",
+            "Mon cerveau virtuel n'est pas infaillible.",
+            "Tu es sûr que tu veux vraiment savoir ?",
+            "Un savant fou aurait peut-être un indice.",
+            "Laisse-moi réfléchir... Non, toujours rien.",
+            "Peut-être que la réponse viendra en rêvant.",
+            "Il faut une IA bien plus avancée que moi pour ça.",
+            "Demande à un moine zen, il te donnera sûrement une non-réponse.",
+            "Même les IA ont leurs limites, tu sais.",
+            "Essaie d'appeler un ami, ça marche parfois !",
+            "Peut-être que c'est une question piège ?",
+            "Je me déclare incompétent.",
+            "Même mon créateur n'aurait pas su répondre.",
+            "Tu viens de trouver une question sans réponse.",
+            "Et si tu faisais toi-même des expériences pour savoir ?",
+            "On dirait que l'univers garde ses secrets.",
+            "La réponse est dans le vent... ou pas.",
+            "Essaie de faire un vœu, qui sait ?",
+            "Désolé, mais là, je rends mon tablier."
         ];
+
+        // Réponses pour Aristote
+        const philosophicalQuestions = [
+            "Pourquoi dis-tu cela ?",
+            "Qu'entends-tu par là ?",
+            "Cela change-t-il quelque chose dans le grand schéma de l'univers ?",
+            "Quelle est ta définition de cela ?",
+            "Quelle est la signification de cela pour toi ?",
+            "Pourquoi cela te préoccupe-t-il ?",
+            "Quelle est la question derrière ta question ?",
+            "Quelle est la réponse à la question de la vie, de l'univers et du reste ?",
+            "Je pense que tu ne réfléchis pas assez... reviens me voir quand tu auras ta vraie question",
+            "Je pense que tu es sur la bonne voie... mais tu n'as pas encore trouvé la bonne question",
+            "Je pense que tu es sur la bonne voie... mais tu n'as pas encore trouvé la bonne réponse",
+            "Je pense que tu es sur la bonne voie... mais tu n'as pas encore trouvé la bonne question et la bonne réponse",
+            "Je pense donc je suis... mais que suis-je ?",
+            "Je pense donc je suis... mais que suis-je en train de penser ?",
+            "Est-ce que je pense ?",
+            "Est-ce que je suis ?",
+            "Es tu sûr de ce que tu dis ?",
+            "Es tu sûr de ce que tu penses ?",
+            "Je crois que j'ai raison et que tu as tort... mais pourquoi ?",
+            "Qu'est-ce qui te pousse à poser cette question ?",
+            "Penses-tu que tout a une réponse ?",
+            "Quelle est la nature de la vérité ?",
+            "Est-ce que tout ce que l'on croit est réel ?",
+            "Qui décide de ce qui est juste ou faux ?",
+            "Si une question n'a pas de réponse, est-ce toujours une question ?",
+            "Peut-on vraiment comprendre l'infini ?",
+            "Et si ce que nous savons était une illusion ?",
+            "La liberté existe-t-elle vraiment ?",
+            "Qu'est-ce que cela signifie d'être vivant ?",
+            "Comment définis-tu la conscience ?",
+            "Si tout est connecté, où commence et finit une chose ?",
+            "La réalité est-elle subjective ou objective ?",
+            "Peut-on échapper au temps ?",
+            "Pourquoi existe-t-il quelque chose plutôt que rien ?",
+            "Si l'univers a une fin, qu'y a-t-il après ?",
+            "Peut-on connaître le bonheur sans tristesse ?",
+            "La perfection est-elle atteignable ?",
+            "Est-il plus important d'avoir raison ou d'être heureux ?",
+            "Les rêves sont-ils aussi réels que la vie éveillée ?",
+            "Qu'est-ce que le bien sans le mal ?",
+            "La beauté est-elle une invention humaine ?",
+            "Peut-on être libre si l'on a des désirs ?",
+            "Qu'est-ce que la vraie sagesse ?",
+            "Le hasard existe-t-il vraiment ?",
+            "Le destin est-il écrit ou le créons-nous ?",
+            "Si une action n'est vue de personne, a-t-elle existé ?",
+            "Qu'est-ce qui distingue l'homme de la machine ?",
+            "Peut-on vivre sans amour ?",
+            "L'oubli est-il nécessaire au bonheur ?",
+            "Sommes-nous vraiment les maîtres de nos décisions ?",
+            "La connaissance a-t-elle des limites ?",
+            "Quelle est la valeur du silence ?",
+            "Peut-on penser sans langage ?",
+            "L'ignorance est-elle une forme de bonheur ?",
+            "Qu'est-ce que le temps ?",
+            "La vie a-t-elle un sens intrinsèque ou est-ce à nous de lui en donner un ?",
+            "Qu'est-ce que le mal absolu ?",
+            "La souffrance a-t-elle une utilité ?",
+            "Peut-on être moral sans croyance ?",
+            "Le progrès est-il toujours bon ?",
+            "Peut-on vraiment connaître quelqu'un ?",
+            "Un mensonge peut-il être moralement acceptable ?",
+            "Qu'est-ce que la justice universelle ?",
+            "La nature est-elle parfaite ?",
+            "Peut-on réellement définir la beauté ?",
+            "L'intelligence est-elle une bénédiction ou une malédiction ?",
+            "Le chaos fait-il partie de l'ordre ?",
+            "La solitude est-elle une nécessité ou une souffrance ?",
+            "Si on oublie, cela signifie-t-il que c'est arrivé ?"
+    ];
+
+
+        const contextResponses = {
+            temps: ["Le temps est-il une invention humaine ?", "Qu'est-ce qui te pousse à réfléchir au temps ?"],
+            bonheur: ["Qu'est-ce que le bonheur pour toi ?"]
+        };
 
         function addMessage(chatId, message, isUser) {
             const history = document.getElementById(`history${chatId}`);
-            
-            // Message utilisateur
             const userDiv = document.createElement('div');
             userDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
             userDiv.textContent = message;
             history.appendChild(userDiv);
-
-            // Séparateur
-            const separator = document.createElement('hr');
-            history.appendChild(separator);
-
-            // Défilement automatique
+            history.appendChild(document.createElement('hr'));
             history.scrollTop = history.scrollHeight;
         }
 
@@ -199,17 +387,10 @@
             addMessage(chatId, text, true);
 
             let response;
-            switch(chatId) {
-                case 1:
-                    response = randomResponses[Math.floor(Math.random() * randomResponses.length)];
-                    break;
-                case 2:
-                    response = `Pourquoi "${text}" exactement ?`;
-                    if (Math.random() > 0.5) response = `Que veux-tu dire par "${text}" ?`;
-                    break;
-                case 3:
-                    response = dontKnowResponses[Math.floor(Math.random() * dontKnowResponses.length)];
-                    break;
+            if (chatId === 1) {
+                response = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+            } else if (chatId === 3) {
+                response = dontKnowResponses[Math.floor(Math.random() * dontKnowResponses.length)];
             }
 
             setTimeout(() => {
@@ -219,12 +400,38 @@
             input.value = '';
         }
 
-        // Correction clé : Conversion en nombre avec parseInt
+        function handleInputAristote() {
+            const input = document.getElementById("input2");
+            const text = input.value.trim();
+            if (!text) return;
+
+            addMessage("2", text, true);
+
+            let response = philosophicalQuestions[Math.floor(Math.random() * philosophicalQuestions.length)];
+            for (const [key, responses] of Object.entries(contextResponses)) {
+                if (text.toLowerCase().includes(key)) {
+                    response = responses[Math.floor(Math.random() * responses.length)];
+                    break;
+                }
+            }
+
+            setTimeout(() => {
+                addMessage("2", response, false);
+            }, 500);
+
+            input.value = '';
+        }
+
+        // Ajout pour gérer la touche Entrée
         document.querySelectorAll('input').forEach(input => {
             input.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     const chatId = parseInt(input.id.replace('input', ''), 10);
-                    handleInput(chatId);
+                    if (chatId === 2) {
+                        handleInputAristote();
+                    } else {
+                        handleInput(chatId);
+                    }
                 }
             });
         });

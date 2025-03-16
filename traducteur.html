@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traducteur d'Insultes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #4285f4;
+        }
+        .input-area, .output-area {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #357ae8;
+        }
+        .output {
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" style="display: inline-block; margin: 20px; text-decoration: none; color: #4285f4; font-size: 16px;">Retour à l'accueil</a>
+    <div class="container">
+        <div class="header">
+            <h1>Traducteur d'Insultes</h1>
+        </div>
+        <div class="input-area">
+            <textarea id="modernInsult" placeholder="Entrez une insulte moderne..."></textarea>
+        </div>
+        <button id="translateButton">Traduire</button>
+        <div class="output-area">
+            <p class="output" id="oldFrenchOutput"></p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
+    <script>
+        const translations = {
+            "connard": "noble chevalier à l'esprit malicieux",
+            "crétin": "humble serf à l'entendement limité",
+            "abruti": "vaillant gueux au cerveau embrumé",
+            "imbécile": "gentil damoiseau aux idées égarées",
+            "fainéant": "paresseux troubadour en quête d'inspiration",
+            "idiot": "naïf bouffon aux pensées confuses",
+            "andouille": "joyeux drille à la cervelle légère",
+            "bouffon": "amuseur de cour aux facéties douteuses",
+            "pauvre type": "misérable manant au destin pitoyable",
+            "tête de mule": "obstiné palefroi à la volonté de fer",
+            "maladroit": "gracieux faucheur de chandelles",
+            "lâche": "prudent chevalier fuyant l'adversité",
+            "grossier personnage": "rustre manant aux manières peu courtoises",
+            "truand": "aventurier des bas-fonds",
+            "menteur": "conteur de fables fantastiques",
+            "vantard": "héraut de ses propres exploits",
+            "ingrat": "noble oublieux des bienfaits reçus",
+            "hypocrite": "fin stratège aux masques changeants",
+            "arrogant": "fier seigneur au port altier",
+            "égoïste": "gardien jaloux de ses trésors",
+            "ignorant": "sage en herbe ignorant les lumières du savoir",
+            "pignouf": "rustre paysan aux manières frustes",
+            "salaud": "coquin des ruelles obscures",
+            "gogol": "innocent farceur aux idées saugrenues",
+            "branquignol": "étourdi jongleur de balivernes",
+            "pédant": "érudit fanfaron de son savoir",
+            "fou": "libre esprit échappé des réalités",
+            "trouduc": "chevalier maladroit de l'humour grivois",
+            "minable": "humble gueux au destin modeste",
+            "nuisible": "fauve rôdant dans l'ombre",
+            "raté": "artisan malchanceux de sa propre vie",
+            "chiant": "troubadour mélancolique aux chants monotones",
+            "mufle": "noble sans égard pour les convenances",
+            "glandeur": "philosophe contemplatif de l'oisiveté",
+            "ramassis de merde": "assemblage de reliques fétides",
+            "enfoiré": "compagnon de taverne aux mœurs douteuses",
+            "gros nul": "maître incontesté de la médiocrité",
+            "tête de pioche": "persévérant manant au front dur",
+            "fumier": "fertilisant des champs de la discorde",
+            "sale type": "marchand d'ombres et de trahisons",
+            "bouffon de cour": "amuseur des puissants aux plaisirs faciles",
+            "morveux": "jeune damoiseau au nez humide",
+            "vaurien": "vagabond des chemins poussiéreux",
+            "gredin": "fripon des ruelles tortueuses",
+            "sagouin": "rustre mal léché aux manières animales",
+            "pouilleux": "gueux des bas quartiers",
+            "cloporte": "habitants des recoins obscurs",
+            "faux-jeton": "artisan de masques trompeurs",
+            "goujat": "manant aux manières brutales",
+            "pignouf": "rustre des campagnes lointaines",
+            "souillon": "servante des cuisines enfumées",
+            "mécréant": "hérétique des croyances anciennes",
+            "foutriquet": "petit seigneur sans importance",
+            "bécasse": "dame aux idées égarées",
+            "cornichon": "naïf paysan aux pensées simples",
+            "lavette": "chevalier sans courage",
+            "pédé": "damoiseau aux mœurs légères",
+            "tapette": "joueur de flûte aux airs efféminés",
+            "grosse vache": "dame de grande envergure",
+            "vieille bique": "matrone aux cheveux gris",
+            "vieille peau": "dame aux charmes fanés",
+            "vieille baderne": "noble aux idées dépassées",
+            "vieille chouette": "sagesse nocturne aux yeux perçants",
+            "vieille sorcière": "guérisseuse aux potions mystérieuses",
+            "vieille taupe": "habitante des souterrains obscurs",
+            "vieille toupie": "dame tournoyant dans ses pensées",
+            "vieille vache": "matrone au regard sévère",
+            "vieille fouine": "dame aux manières rusées",
+            "vieille pie": "bavarde des cours royales",
+            "branleur de hérisson": "farceur des bois aux gestes maladroits",
+            "bougre d'âne": "compagnon de route aux idées têtues",
+            "bougre de crétin": "compagnon de fortune aux pensées confuses",
+            "bougre de mulet": "compagnon de labeur aux épaules solides",
+            "petit con": "jeune damoiseau aux manières impertinentes",
+            "petite conne": "jeune damoiselle aux idées saugrenues",
+            "saloperie": "assemblage de choses viles",
+            "sac à merde": "contenant de matières fécales",
+            "troufion": "soldat de bas étage",
+            "trouduc": "chevalier maladroit de l'humour grivois",
+            "ta race": "ton ascendance",
+            "ta mère": "ta génitrice",
+            "ta grand-mère": "ta aïeule",
+            "ta sœur": "ta frangine",
+            "ton père": "ton géniteur",
+            "ton grand-père": "ton aïeul",
+            "ton frère": "ton frangin",
+            "ta famille": "ton lignage",
+            "je te chie dans la bouche": "je te souhaite une digestion difficile",
+            "je te chie dans le cou": "je te souhaite une démangeaison persistante",
+            "je te chie dans le nez": "je te souhaite un rhume tenace",
+            "ça c'est ma fusée batard": "Voici mon destrier céleste, vil maraud !",
+            "Jte ramène desz schlags qui ont le Sida qui te baisent ta mère": "Je t'invite à une rencontre avec des personnes de mauvaise compagnie",
+            "Chui chaud bouillant": "Je suis prêt à en découdre",
+            "Voila c'est Morsay, truand 2 la galère": "Je me présente, Morsay, aventurier des bas-fonds",
+            "Bim et ca rentre fils de pute !": "Et voilà, c'est fait, vil coquin !",
+            "CLIQUEZ, CLIQUEZ BANDE DE SALOPES": "Appuyez sur le bouton, mesdames et messieurs",
+            "Donc envoie moi un message, lui il t'encule, envoie moi un autre message il enculera ta femme": "Si tu m'envoies un message, je te répondrai, et si tu t'y reprends, je répondrai à ta femme",
+            "Le RSA ? ... 40 ans que j'le touche, p'tit con !": " la monnaie du seigneur ? Voila plus de 40 étés que je les ai, jobastre",
+            "ta mère, la chatte à ta mère": "ta génitrice, l'entrejambe de ta génitrice",
+            "rigole pas c'est la vérité batard": "cesse de suite de rire, je ne fais que déclamer la vérité, malotru",
+            "MON NOM EST LORD AUTISTE": "Je suis susnommé Autistus, Lord Autistus",
+            "Moi je t'arrache l'oeil et je MANGE TON OEIL je suis un vrai algerien moi !!!": "Je te violenterai et je me délecterai de tes organes",
+            "dépucelle les maternelles": "dépucelle les maternelles",
+            "Je donne 20 euros à un pd il t'encule dans le camion":"Je donne quelques francs à un gay, il s'occupera de toi",
+            "Ta mère.": "Elle va bien, merci",
+            "sucez moi la bite !": "dégustez mon entre jambe pitié",
+            "jvous encule vos races moi": "je fais de votre famille étendue mes concubins (analement)",
+            "tu vas crier comme une salope": "ta voix va se mettre à porter",
+            "Viens à Clignancourt":"Viens dans ma bourgade, Clignancourt, vil coquin",
+            "nous on est armés chargés calibrés batard": "nous sommes équipés, prêts à en découdre, vil maraud",
+            "j'ai des potes qui ont des kalash": "j'ai des amis qui possèdent des outils de type arme à distance",
+            "Je suis comme Jamel Debbouze, sauf que moi j'ai mes deux bras": "Je suis tel Baudoin IV, lépreux, mais sans la lèpre",
+            "Aile de pigeon je suis le pivert qui claque le cul de ta go": "Tu ne fais pas le poids, je m'occupe de ta compagne",
+            "suce la mobylette": "déguste le canasson",
+            "Je préfère qu'on me tue avec mon honneur, qu'on me déshabille avec mon déshonneur": "je préfère être occis que déshonoré",
+            "Ayaya, tous à poils, sauf les moches": "Oh, que tout le monde se dénude, sauf les laiderons",
+            "Moi je te baise, je rentre ma rolex dans la chatte à ta meuf": "moi, je te fais l'amour, et je rentre mon écu dans ta grognasse",
+            "La vengeance est un plat qui se mange sec": "la vengeance est un mets qui se consomme sans accompagnement"
+        };
+
+        // Normalisation des caractères
+        function normalize(str) {
+            return str
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .replace(/[^a-z0-9 ]/g, "");
+        }
+
+        // Préparation des données avec version normalisée
+        const keys = Object.keys(translations);
+        const normalizedKeys = keys.map(key => ({
+            original: key,
+            normalized: normalize(key)
+        }));
+
+        // Configuration avancée de Fuse.js
+        const fuse = new Fuse(normalizedKeys, {
+            keys: ['normalized'],
+            includeScore: true,
+            threshold: 0.6, // Seuil plus permissif
+            ignoreLocation: true, // Ignore la position des mots dans la phrase
+            minMatchCharLength: 2, // Correspondances plus courtes
+            distance: 100, // Distance de recherche augmentée
+            useExtendedSearch: true,
+            shouldSort: true
+        });
+
+        function translate() {
+            const input = document.getElementById("modernInsult").value;
+            const cleanInput = normalize(input);
+        
+            // Recherche avec Fuse.js
+            const result = fuse.search(cleanInput, { 
+                limit: 3 
+            });
+        
+            // Si aucune correspondance directe, on essaie de chercher des mots-clés
+            if (result.length === 0) {
+                const keywords = cleanInput.split(" ").filter(word => word.length > 3); // Extraire les mots-clés
+                const keywordResults = keywords.flatMap(keyword => fuse.search(keyword));
+
+                if (keywordResults.length > 0) {
+                    result.push(...keywordResults);
+                }
+            }
+        
+            let outputHTML = "";
+            if (result.length) {
+                outputHTML = result.slice(0, 3).map(match => {
+                    const suggestion = match.item.original;
+                    return `<div class="suggestion" onclick="useSuggestion('${suggestion}')">
+                        <strong>${suggestion}</strong>: ${translations[suggestion]}
+                    </div>`;
+                }).join('');
+            } else {
+                outputHTML = "Aucune correspondance trouvée, noble ami.";
+            }
+        
+            document.getElementById("oldFrenchOutput").innerHTML = outputHTML;
+        }
+
+        function useSuggestion(suggestion) {
+            document.getElementById("modernInsult").value = suggestion;
+            translate();
+        }
+
+        document.getElementById("translateButton").addEventListener("click", translate);
+    </script>
+</body>
+</html>
