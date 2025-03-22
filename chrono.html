@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Chronomètre Existentialiste</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            background: #1a1a1a;
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+
+        #timer {
+            font-size: 5em;
+            margin: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        #message {
+            font-size: 2em;
+            margin: 20px;
+            min-height: 60px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .reset-btn {
+            background: #ff4444;
+            color: white;
+        }
+
+        .redirect-btn {
+            background: #4444ff;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+        }
+
+        .reset-btn:hover {
+            background: #cc0000;
+        }
+
+        .redirect-btn:hover {
+            background: #0000cc;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 3px solid #444;
+            padding: 30px;
+            border-radius: 15px;
+            background: #2a2a2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⏳ Chronomètre de la Mort Qui Approche ⏳</h1>
+        <div id="timer">00:00:00</div>
+        <div id="message">Prêt à gaspiller votre vie ?</div>
+        
+        <div class="btn-group">
+            <button class="btn reset-btn" onclick="resetTime()">Réinitialiser mon néant</button>
+            <button class="btn redirect-btn" onclick="location.href='index.html'">Continuer à sombrer</button>
+        </div>
+    </div>
+
+    <script>
+        let startTime = localStorage.getItem('startTime');
+        let totalSeconds = localStorage.getItem('totalSeconds') || 0;
+        let lastUpdate = Date.now();
+
+        const messages = [
+            {time: 0, text: "👶 Nouveau-né du temps perdu"},
+            {time: 60, text: "⏳ Vous avez perdu une minute... déjà ?"},
+            {time: 300, text: "☕ Vous auriez pu boire un café"},
+            {time: 600, text: "🍳 Vous auriez pu préparer un petit-déjeuner"},
+            {time: 1200, text: "🚿 Vous auriez pu prendre une douche relaxante"},
+            {time: 1800, text: "📺 Vous auriez pu regarder un épisode de série"},
+            {time: 2700, text: "🍿 Vous auriez pu regarder un court métrage"},
+            {time: 3600, text: "🏋️ Vous auriez pu faire une séance de sport"},
+            {time: 5400, text: "📚 Vous auriez pu lire quelques chapitres d'un livre"},
+            {time: 7200, text: "🍽️ Vous auriez pu préparer et déguster un bon repas"},
+            {time: 10800, text: "🎬 Vous auriez pu regarder un long métrage"},
+            {time: 14400, text: "🚗 Vous auriez pu faire un road trip de 150 km"},
+            {time: 18000, text: "📖 Vous auriez pu lire un livre de 200 pages"},
+            {time: 21600, text: "💤 Vous auriez pu dormir une nuit complète"},
+            {time: 28800, text: "🌍 Vous auriez pu faire un vol Paris-New York"},
+            {time: 36000, text: "📚 Vous auriez pu lire un livre de 400 pages (6h40)"},
+            {time: 43200, text: "🏞️ Vous auriez pu faire une randonnée en montagne"},
+            {time: 54000, text: "🎮 Vous auriez pu terminer un jeu vidéo moyen"},
+            {time: 72000, text: "📚 Vous auriez pu lire deux livres de 400 pages"},
+            {time: 86400, text: "🌞 Vous auriez pu vivre une journée entière"},
+            {time: 108000, text: "⚰️ Appelez vos proches avant qu'il ne soit trop tard"},
+            {time: 129600, text: "📚 Vous auriez pu lire trois livres de 400 pages"},
+            {time: 172800, text: "🌙 Vous auriez pu vivre deux jours entiers"},
+            {time: 216000, text: "🧟 Vous faites officiellement partie du décor"},
+            {time: 259200, text: "📚 Vous auriez pu lire quatre livres de 400 pages"},
+            {time: 302400, text: "🌍 Vous auriez pu faire un tour du monde (en avion)"},
+            {time: 345600, text: "📚 Vous auriez pu lire cinq livres de 400 pages"},
+            {time: 604800, text: "📅 Vous auriez pu vivre une semaine entière"},
+            {time: 1209600, text: "🗓️ Vous auriez pu vivre deux semaines entières"},
+            {time: 2592000, text: "📅 Vous auriez pu vivre un mois entier"},
+            {time: 5184000, text: "🗓️ Vous auriez pu vivre deux mois entiers"},
+            {time: 7776000, text: "📅 Vous auriez pu vivre trois mois entiers"},
+            {time: 31536000, text: "📅 Vous auriez pu vivre une année entière"}
+        ];
+
+        function updateTimer() {
+            const now = Date.now();
+            const delta = Math.floor((now - lastUpdate) / 1000);
+            totalSeconds = parseInt(totalSeconds) + delta;
+            lastUpdate = now;
+            
+            localStorage.setItem('totalSeconds', totalSeconds);
+            localStorage.setItem('startTime', now);
+
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            document.getElementById('timer').textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            const currentMessage = messages.slice().reverse().find(m => totalSeconds >= m.time);
+            document.getElementById('message').textContent = currentMessage.text;
+        }
+
+        function resetTime() {
+            localStorage.clear();
+            totalSeconds = 0;
+            lastUpdate = Date.now();
+            updateTimer();
+            alert("Le néant a été réinitialisé... pour maintenant");
+        }
+
+        // Initialisation
+        if (!startTime) {
+            startTime = Date.now();
+            localStorage.setItem('startTime', startTime);
+        } else {
+            const lostTime = Math.floor((Date.now() - startTime) / 1000);
+            totalSeconds = parseInt(totalSeconds) + lostTime;
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+
+        // Sauvegarde avant fermeture
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('totalSeconds', totalSeconds);
+            localStorage.setItem('startTime', Date.now());
+        });
+    </script>
+</body>
+</html>

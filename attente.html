@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File d'attente infinie</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        #position {
+            font-size: 3em;
+            margin: 30px 0;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .queue-container {
+            height: 400px;
+            width: 200px;
+            overflow: hidden;
+            position: relative;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .queue {
+            transition: transform 0.5s ease-in-out;
+            position: absolute;
+            width: 100%;
+        }
+
+        .queue-item {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            border-bottom: 1px solid #eee;
+        }
+
+        .current {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>File d'attente</h1>
+        <div id="position">7,875,438</div>
+        
+        <div class="queue-container">
+            <div class="queue" id="queue"></div>
+        </div>
+    </div>
+
+    <script>
+        let position = 7875438;
+        const queue = document.getElementById('queue');
+        const itemHeight = 60; // Hauteur d'un élément de la file
+
+        function genererFile() {
+            queue.innerHTML = '';
+            
+            // Génère 50 éléments avant et après la position actuelle
+            for(let i = -50; i <= 50; i++) {
+                const div = document.createElement('div');
+                div.className = 'queue-item';
+                const num = position + i;
+                
+                if(i === 0) {
+                    div.classList.add('current');
+                    div.textContent = num.toLocaleString() + ' (VOUS)';
+                } else {
+                    div.textContent = num.toLocaleString();
+                }
+                
+                queue.appendChild(div);
+            }
+        }
+
+        function avancer() {
+            position--;
+            document.getElementById('position').textContent = position.toLocaleString();
+            
+            // Animation de défilement
+            queue.style.transform = `translateY(${itemHeight}px)`;
+            
+            setTimeout(() => {
+                queue.removeChild(queue.firstElementChild);
+                
+                // Ajoute un nouvel élément à la fin
+                const newItem = document.createElement('div');
+                newItem.className = 'queue-item';
+                newItem.textContent = (position + 51).toLocaleString();
+                queue.appendChild(newItem);
+                
+                queue.style.transition = 'none';
+                queue.style.transform = 'translateY(0)';
+                setTimeout(() => {
+                    queue.style.transition = 'transform 0.5s ease-in-out';
+                }, 10);
+            }, 500);
+        }
+
+        // Initialisation
+        genererFile();
+
+        // Avance automatiquement toutes les secondes
+        setInterval(avancer, 1000);
+    </script>
+</body>
+</html>

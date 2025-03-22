@@ -134,6 +134,16 @@
         </div>
     </div>
 
+    <!-- Chatbot 4: Triso -->
+    <div class="chat-container" style="border: 2px solid #ff66ff66;">
+        <h2>Baveux</h2>
+        <div class="chat-history" id="history4"></div>
+        <div class="input-container">
+            <input type="text" id="input4" placeholder="Écrivez quelque chose...">
+            <button onclick="handleInputDumb()">▶</button>
+        </div>
+    </div>
+
     <script>
         // Réponses pour Akoté-2-laplak
         const randomResponses = [
@@ -420,6 +430,52 @@
             }, 500);
 
             input.value = '';
+        }
+
+        // Fonction pour générer une chaîne de caractères aléatoire
+        function generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+            const emojis = ['😀', '😂', '🤣', '😍', '🎉', '🚀', '💡', '🔥', '🌟', '💰', '🍕', '🐱', '🎮', '❤️', '✔️', '🌺', '🌈', '🍦', '🎶', '📚'];
+            const allChars = [...characters.split(''), ...emojis];
+    
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * allChars.length);
+                result += allChars[randomIndex];
+            }
+            return result;
+        }
+
+        // Fonction pour gérer l'entrée de Baveux
+        function handleInputDumb() {
+            const input = document.getElementById("input4"); // Récupère l'input du chatbot 4
+            const text = input.value.trim(); // Récupère le texte saisi par l'utilisateur
+
+            if (!text) return; // Si l'input est vide, ne rien faire
+
+            // Afficher le message de l'utilisateur
+            addMessage("4", text, true);
+
+            // Générer une réponse aléatoire
+            const randomString = generateRandomString(20);
+
+            // Afficher la réponse du chatbot après un court délai
+            setTimeout(() => {
+                addMessage("4", randomString, false);
+            }, 500);
+
+            input.value = ''; // Vider le champ d'entrée
+        }
+
+        // Fonction pour ajouter un message dans l'historique du chat
+        function addMessage(chatId, message, isUser) {
+            const history = document.getElementById(`history${chatId}`);
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.textContent = message;
+            history.appendChild(messageDiv);
+            history.appendChild(document.createElement('hr'));
+            history.scrollTop = history.scrollHeight; // Faire défiler vers le bas
         }
 
         // Ajout pour gérer la touche Entrée

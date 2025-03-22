@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulateur de Respiration</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+
+        #counter {
+            font-size: 48px;
+            margin: 20px;
+            z-index: 2;
+        }
+
+        #light {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 20px;
+            transition: background-color 0.3s;
+            z-index: 2;
+        }
+
+        #light.active {
+            background-color: #7fff7f;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            display: none;
+            animation: fadeOut 1s forwards;
+            animation-delay: 0.5s;
+            z-index: 3;
+        }
+
+        @keyframes fadeOut {
+            from {opacity: 1;}
+            to {opacity: 0;}
+        }
+
+        #lungs {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 300px; 
+            opacity: 0.2;
+            z-index: 1;
+            animation: breathe 4s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+        }
+
+        /* Styles pour les boutons */
+        #home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 4;
+        }
+
+        #mode-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 4;
+            margin-top: 150px; /* Ajuster la position verticale */
+        }
+    </style>
+</head>
+<body>
+    <button id="home-button">Retour à l'accueil</button>
+    <button id="mode-button">Changer de mode</button>
+
+    <div id="counter">0</div>
+    <div id="light"></div>
+    <div id="popup" class="popup">T'as respiré !</div>
+
+    <div id="lungs">🫁</div>
+
+    <script>
+        let count = 0;
+        let isPtitGregoryMode = false; // Variable pour suivre le mode
+        const counterElement = document.getElementById('counter');
+        const lightElement = document.getElementById('light');
+        const popupElement = document.getElementById('popup');
+        const modeButton = document.getElementById('mode-button');
+        let breathInterval;
+
+        // Fonction pour simuler une respiration
+        function simulateBreath() {
+            if (isPtitGregoryMode) return; // Ne rien faire en mode PtitGregory
+
+            // Incrémenter le compteur
+            count++;
+            counterElement.textContent = count;
+
+            // Activer la lumière
+            lightElement.classList.add('active');
+            setTimeout(() => {
+                lightElement.classList.remove('active');
+            }, 300);
+
+            // Afficher le popup
+            popupElement.style.display = 'block';
+            popupElement.style.animation = 'none';
+            void popupElement.offsetWidth; 
+            popupElement.style.animation = 'fadeOut 1s forwards';
+            popupElement.style.animationDelay = '0.5s';
+
+            // Cacher le popup après 1.5 secondes
+            setTimeout(() => {
+                popupElement.style.display = 'none';
+            }, 1500);
+        }
+
+        // Générer un délai aléatoire entre 3 et 5 secondes (12 à 20 respirations par minute)
+        function getRandomBreathInterval() {
+            return Math.floor(Math.random() * (5000 - 3000 + 1)) + 3000; // Entre 3 et 5 secondes
+        }
+
+        // Lancer la simulation de respiration automatique
+        function startAutomaticBreathing() {
+            simulateBreath(); // Première respiration
+            breathInterval = setInterval(simulateBreath, getRandomBreathInterval()); // Respirations suivantes
+        }
+
+        // Arrêter la simulation de respiration
+        function stopAutomaticBreathing() {
+            clearInterval(breathInterval);
+        }
+
+        // Changer de mode
+        function toggleMode() {
+            isPtitGregoryMode = !isPtitGregoryMode;
+            if (isPtitGregoryMode) {
+                stopAutomaticBreathing();
+                modeButton.textContent = "Mode Normal";
+            } else {
+                startAutomaticBreathing();
+                modeButton.textContent = "Mode Ptit Gregory";
+            }
+        }
+
+        // Démarrer la simulation au chargement de la page
+        startAutomaticBreathing();
+
+        // Gestion des événements des boutons
+        document.getElementById('home-button').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        modeButton.addEventListener('click', toggleMode);
+    </script>
+</body>
+</html>
