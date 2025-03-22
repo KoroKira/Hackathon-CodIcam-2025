@@ -2,39 +2,80 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>AppBlock - Parodie AdBlock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Quotidien Numérique</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="appblock.css">
 </head>
 <body>
-    <header>
-        <h1>🛡️ AppBlock</h1>
-        <button id="cleanButton">Nettoyer la page 🧹</button>
-    </header>
+    <!-- Bandeau pub fixe -->
+    <div class="ad-top fixed-top bg-warning text-center p-2">
+        🚨 <span id="dynamicAd">CLIQUEZ ICI POUR VOTRE CADEAU GRATUIT !</span> 🚨
+    </div>
 
-    <nav>
-        <a href="#">Accueil</a>
-        <a href="#">Articles</a>
-        <a href="#">Contact</a>
-    </nav>
+    <div class="container mt-5">
+        <!-- En-tête -->
+        <header class="row mb-4">
+            <div class="col-md-8">
+                <h1>Le Quotidien Numérique</h1>
+                <nav class="nav">
+                    <a class="nav-link" href="#">Actualités</a>
+                    <a class="nav-link" href="#">Sports</a>
+                    <a class="nav-link" href="#">Culture</a>
+                </nav>
+            </div>
+            <div class="col-md-4">
+                <div class="ad-sidebar p-3 text-center">
+                    📢 VOS VOISINS GAGNENT 5000€/MOIS - DÉCOUVREZ COMMENT !
+                </div>
+            </div>
+        </header>
 
-    <main>
-        <article>
-            <h2>Article intéressant</h2>
-            <img src="https://picsum.photos/400/200" alt="Image aléatoire">
-            <p>Un contenu très captivant qui mérite vraiment votre attention...</p>
-        </article>
+        <!-- Contenu principal -->
+        <main class="row">
+            <!-- Article -->
+            <article class="col-md-8">
+                <h2>Un important accord climatique signé</h2>
+                <img src="https://picsum.photos/800/400" class="img-fluid mb-3" alt="Actualité">
+                <p>Les dirigeants mondiaux ont conclu un accord historique...</p>
+                
+                <!-- Pub intégrée dans l'article -->
+                <div class="ad-in-article p-3 my-4">
+                    ❗️ VOUS AIMEZ L'ENVIRONNEMENT ? ACHETEZ NOTRE PRODUIT ÉCOLO ❗️
+                </div>
 
-        <div class="ad">🚨 ÉNORME PROMO ! Cliquez ICI ! 🚨</div>
+                <p>Suite de l'article...</p>
+            </article>
 
-        <article>
-            <h2>Autre sujet passionnant</h2>
-            <p>Encore plus de contenu de qualité qui va disparaître...</p>
-            <img src="https://picsum.photos/400/201" alt="Autre image">
-        </article>
+            <!-- Sidebar de pubs -->
+            <aside class="col-md-4">
+                <div class="ad-video mb-4">
+                    <video width="100%" autoplay muted loop>
+                        <source src="https://cdn.pixabay.com/video/2023/02/28/160456-807654132_large.mp4" type="video/mp4">
+                    </video>
+                </div>
 
-        <div class="ad">🎉 50% DE RÉDUCTION ! LIMITED TIME OFFER ! 🎉</div>
-    </main>
+                <div class="ad-sidebar p-3 mb-4">
+                    🎰 JOUER MAINTENANT - 200% DE BONUS 🎰
+                </div>
+            </aside>
+        </main>
 
+        <!-- Pop-up discrète -->
+        <div class="ad-popup">
+            <div class="popup-content">
+                <p>Ne partez pas ! Offre spéciale pour vous ❤️</p>
+                <button class="btn btn-sm btn-danger">X</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de nettoyage -->
+    <div class="fixed-bottom p-3 text-end">
+        <button id="cleanButton" class="btn btn-dark btn-lg">Nettoyer avec AppBlock 🧹</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="appblock.js"></script>
 </body>
 </html>
