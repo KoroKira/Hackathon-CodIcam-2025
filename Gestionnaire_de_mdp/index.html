@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Mots de Passe (Très Oublieux)</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestionnaire de Mots de Passe</h1>
+        <p><em>"Le seul gestionnaire qui oublie tout, tout le temps !"</em></p>
+        <form id="passwordForm">
+            <label for="service">Service :</label>
+            <input type="text" id="service" name="service" required>
+            
+            <label for="username">Nom d'utilisateur :</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">Enregistrer</button>
+        </form>
+        
+        <h2>Mots de Passe Enregistrés</h2>
+        <ul id="passwordList"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
