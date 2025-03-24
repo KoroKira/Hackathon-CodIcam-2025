@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Météo Rance ☂️</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #87CEEB, #4682B4);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 20px;
+            background-color: #555;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .message-box {
+            display: none;
+            background: #ff4444;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: bold;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        button {
+            background: #4CAF50;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .start-screen {
+            display: block;
+        }
+
+        .loading-screen {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="start-screen" id="startScreen">
+            <h1>☂️ Météo Rance ☀️</h1>
+            <p>Nous avons besoin de votre localisation pour vous donner une météo hyper précise (ou pas)</p>
+            <button id="startBtn">Autoriser la localisation</button>
+        </div>
+
+        <div class="loading-screen" id="loadingScreen">
+            <h1>☂️ Météo Rance ☀️</h1>
+            <p>Analyse en cours...</p>
+            <div class="loading-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <p id="status">En attente de votre localisation...</p>
+            <div class="message-box" id="result">
+                Ouvre la fenêtre, va toucher de l'herbe flemmard 🌱
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const startScreen = document.getElementById('startScreen');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const progressBar = document.getElementById('progress');
+        const statusText = document.getElementById('status');
+        const resultBox = document.getElementById('result');
+
+        function updateProgress(newPercent, newStatus) {
+            progressBar.style.width = newPercent + '%';
+            statusText.textContent = newStatus;
+        }
+
+        function startProcess() {
+            startScreen.style.display = 'none';
+            loadingScreen.style.display = 'block';
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    updateProgress(10, 'Localisation trouvée : ' + 
+                        (position.coords.latitude.toFixed(4)) + '°N, ' + 
+                        (position.coords.longitude.toFixed(4)) + '°E');
+
+                    setTimeout(() => {
+                        updateProgress(30, 'Rassemblement des infos (le stagiaire bosse...)');
+                        
+                        setTimeout(() => {
+                            updateProgress(70, 'Compilation des données météo approximatives...');
+                            
+                            setTimeout(() => {
+                                updateProgress(100, 'Analyse complète (enfin presque)');
+                                resultBox.style.display = 'block';
+                            }, 2000);
+                        }, 1500);
+                    }, 1000);
+                },
+                (error) => {
+                    updateProgress(10, 'Localisation refusée - On va dire que t\'es à Paris');
+                    
+                    setTimeout(() => {
+                        updateProgress(30, 'Détection automatique : Canapé et chips');
+                        
+                        setTimeout(() => {
+                            updateProgress(70, 'Analyse de ton frigo...');
+                            
+                            setTimeout(() => {
+                                updateProgress(100, 'Résultat : Va faire un tour dehors');
+                                resultBox.style.display = 'block';
+                            }, 2000);
+                        }, 1500);
+                    }, 1000);
+                },
+                { timeout: 10000 }
+            );
+        }
+
+        startBtn.addEventListener('click', startProcess);
+    </script>
+</body>
+</html>
